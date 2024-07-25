@@ -4,6 +4,9 @@ import { fetchCafes } from "../features/cafeSlice";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
+import { Button, ButtonGroup } from "@mui/material";
+import ModeIcon from "@mui/icons-material/Mode";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const CustomButtonComponent = (props) => {
   return <button onClick={() => window.alert("clicked")}>Push Me!</button>;
@@ -46,30 +49,36 @@ const ActionButtonRenderer = ({ value }) => (
   >
     {value && (
       <>
-        <input
-          type="button"
-          value="Edit"
-          onClick={(e) => {
-            e.preventDefault();
-            alert(value);
-          }}
-        />
-        <input
-          type="button"
-          value="Delete"
-          onClick={(e) => {
-            e.preventDefault();
-            alert(value);
-          }}
-        />
-        <input
-          type="button"
-          value="View"
-          onClick={(e) => {
-            e.preventDefault();
-            alert(value);
-          }}
-        />
+        <ButtonGroup variant="contained" aria-label="Basic button group">
+          <Button
+            size="small"
+            onClick={(e) => {
+              e.preventDefault();
+              alert(value);
+            }}
+          >
+            <ModeIcon /> Edit
+          </Button>
+          <Button
+            size="small"
+            onClick={(e) => {
+              e.preventDefault();
+              alert(value);
+            }}
+          >
+            <DeleteIcon />
+            Delete
+          </Button>
+          <Button
+            size="small"
+            onClick={(e) => {
+              e.preventDefault();
+              alert(value);
+            }}
+          >
+            View
+          </Button>
+        </ButtonGroup>
       </>
     )}
   </span>
