@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 
 import DiningIcon from "@mui/icons-material/Dining";
+import HomeIcon from "@mui/icons-material/Home";
 
 const drawerWidth = 240;
 
@@ -45,14 +46,22 @@ const Layout = ({ children }) => {
         <Toolbar />
         <Box sx={{ overflow: "auto" }}>
           <List>
-            {["Cafes"].map((text, index) => (
-              <ListItem button key={text}>
+            <a href="/">
+              <ListItem button key="Home">
+                <ListItemIcon>
+                  <HomeIcon />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItem>
+            </a>
+            <a href="/cafes">
+              <ListItem button key="Cafe">
                 <ListItemIcon>
                   <DiningIcon />
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary="Cafes" />
               </ListItem>
-            ))}
+            </a>
           </List>
         </Box>
       </Drawer>
