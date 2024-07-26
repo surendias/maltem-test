@@ -27,6 +27,7 @@ export const updateEmployeeValues = createAsyncThunk(
   "employees/updateEmployee",
   async (employeeData) => {
     const response = await updateEmployee(employeeData);
+    console.log("Update Reponse", response);
     return response;
   }
 );
