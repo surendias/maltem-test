@@ -43,7 +43,7 @@ const Layout = ({ children }) => {
         variant="permanent"
         anchor="left"
       >
-        <Toolbar />
+        {/* <Toolbar /> */}
         <Box sx={{ overflow: "auto" }}>
           <List>
             <a href="/">
@@ -69,7 +69,7 @@ const Layout = ({ children }) => {
         component="main"
         sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
       >
-        <Toolbar />
+        {/* <Toolbar /> */}
         {children}
       </Box>
     </Box>

@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteCafeObject, fetchCafes } from "../features/cafeSlice";
@@ -7,6 +8,7 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { Button, ButtonGroup } from "@mui/material";
 import ModeIcon from "@mui/icons-material/Mode";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PeopleIcon from "@mui/icons-material/People";
 import { useNavigate } from "react-router-dom";
 
 const CafeList = ({ location }) => {
@@ -67,7 +69,14 @@ const CafeList = ({ location }) => {
               size="small"
               onClick={(e) => {
                 e.preventDefault();
-                dispatch(deleteCafeObject(value));
+                if (
+                  confirm("Are you sure you want to delete this record?") ===
+                  true
+                ) {
+                  dispatch(deleteCafeObject(value));
+                } else {
+                  return false;
+                }
               }}
             >
               <DeleteIcon />
@@ -78,10 +87,37 @@ const CafeList = ({ location }) => {
     </span>
   );
 
+  const viewEmployeesButtonRenderer = ({ value }) => (
+    <span
+      style={{
+        display: "flex",
+        height: "100%",
+        width: "100%",
+        alignItems: "center",
+      }}
+    >
+      {value && (
+        <Button
+          size="small"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate(`/employees?cafe=${value}`);
+          }}
+        >
+          <PeopleIcon />
+        </Button>
+      )}
+    </span>
+  );
+
   const columnDefs = [
     { headerName: "Name", field: "name" },
     { headerName: "Description", field: "description" },
-    { headerName: "Employees", field: "employees" },
+    {
+      headerName: "Employees",
+      field: "id",
+      cellRenderer: viewEmployeesButtonRenderer,
+    },
     { headerName: "Location", field: "location" },
     {
       field: "logo",
@@ -113,6 +149,7 @@ const CafeList = ({ location }) => {
   return (
     <div>
       <h1>Cafes</h1>
+      Text
       <div
         className="ag-theme-quartz" // applying the Data Grid theme
         style={{ height: 500 }} // the Data Grid will fill the size of the parent container

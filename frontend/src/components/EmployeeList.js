@@ -1,6 +1,10 @@
+/* eslint-disable no-restricted-globals */
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchEmployees } from "../features/employeeSlice";
+import {
+  deleteEmployeeObject,
+  fetchEmployees,
+} from "../features/employeeSlice";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -9,38 +13,13 @@ import ModeIcon from "@mui/icons-material/Mode";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 
-const EmployeeList = ({ cafeid }) => {
+const EmployeeList = ({ cafe }) => {
+  console.log({ cafe });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const employees = useSelector((state) => state.employees.employees);
   const employeeStatus = useSelector((state) => state.employees.status);
   const error = useSelector((state) => state.employees.error);
-
-  const CompanyLogoRenderer = ({ value }) => (
-    <span
-      style={{
-        display: "flex",
-        height: "100%",
-        width: "100%",
-        alignItems: "center",
-      }}
-    >
-      {value && (
-        <img
-          alt={`${value} Flag`}
-          src={`${value}`}
-          style={{
-            display: "block",
-            width: "25px",
-            height: "auto",
-            maxHeight: "50%",
-            marginRight: "12px",
-            filter: "brightness(1.1)",
-          }}
-        />
-      )}
-    </span>
-  );
 
   const ActionButtonRenderer = ({ value }) => (
     <span
@@ -67,7 +46,15 @@ const EmployeeList = ({ cafeid }) => {
               size="small"
               onClick={(e) => {
                 e.preventDefault();
-                alert(value);
+
+                if (
+                  confirm("Are you sure you want to delete this record?") ===
+                  true
+                ) {
+                  dispatch(deleteEmployeeObject(value));
+                } else {
+                  return false;
+                }
               }}
             >
               <DeleteIcon />
@@ -79,15 +66,13 @@ const EmployeeList = ({ cafeid }) => {
   );
 
   const columnDefs = [
+    { headerName: "Employee Id", field: "id" },
     { headerName: "Name", field: "name" },
-    { headerName: "Description", field: "description" },
-    { headerName: "Employees", field: "employees" },
-    { headerName: "Location", field: "location" },
-    {
-      field: "logo",
-      // Add component to column via cellRenderer
-      cellRenderer: CompanyLogoRenderer,
-    },
+    { headerName: "Email", field: "email_address" },
+    { headerName: "Phone Number", field: "phone_number" },
+    { headerName: "Gender", field: "gender" },
+    { headerName: "Days Worked", field: "days_worked" },
+    { headerName: "Cafe", field: "cafe" },
     {
       headerName: "Actions",
       field: "id",
@@ -98,9 +83,9 @@ const EmployeeList = ({ cafeid }) => {
 
   useEffect(() => {
     if (employeeStatus === "idle") {
-      dispatch(fetchEmployees(cafeid));
+      dispatch(fetchEmployees(cafe));
     }
-  }, [employeeStatus, dispatch, cafeid]);
+  }, [employeeStatus, dispatch, cafe]);
 
   if (employeeStatus === "loading") {
     return <div>Loading...</div>;
@@ -112,7 +97,7 @@ const EmployeeList = ({ cafeid }) => {
 
   return (
     <div>
-      <h1>Cafes</h1>
+      <h1>Employees</h1>
       <div
         className="ag-theme-quartz" // applying the Data Grid theme
         style={{ height: 500 }} // the Data Grid will fill the size of the parent container

@@ -2,6 +2,7 @@ import api from "./api";
 
 const getEmployees = async (cafe = "") => {
   try {
+    console.log({ cafe });
     const response = await api.get(`/employees?cafe=${cafe}`);
     return response.data;
   } catch (error) {

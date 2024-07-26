@@ -22,6 +22,7 @@ export const addCafe = createAsyncThunk("cafes/addCafe", async (cafeData) => {
 export const updateCafeValues = createAsyncThunk(
   "cafes/updateCafe",
   async (id, cafeData) => {
+    console.log({ cafeData });
     const response = await updateCafe(id, cafeData);
     return response;
   }

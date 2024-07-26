@@ -1,16 +1,19 @@
 import React from "react";
 import Layout from "../components/Layout";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import EmployeeList from "../components/EmployeeList";
 
 const Employees = () => {
+  const [searchParams] = useSearchParams();
+  const cafe = searchParams.get("cafe");
+  // console.log({ cafe });
   return (
     <Layout>
-      <Link to="/add-edit-employee">
+      <Link to={`/add-edit-employee?cafe=${cafe}`}>
         <Button>Add New Employee</Button>
       </Link>
-      <EmployeeList />
+      <EmployeeList cafe={cafe} />
     </Layout>
   );
 };

@@ -1,4 +1,5 @@
 const express = require("express");
+const { v4: uuidv4 } = require("uuid");
 const { PrismaClient } = require("@prisma/client");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -55,6 +56,7 @@ app.get("/cafes", async (req, res) => {
 // Get all employees or employees by cafe
 app.get("/employees", async (req, res) => {
   const { cafe } = req.query;
+  console.log({ cafe });
   let employees;
 
   try {
@@ -62,7 +64,7 @@ app.get("/employees", async (req, res) => {
       employees = await prisma.employee.findMany({
         where: {
           cafe: {
-            name: cafe,
+            id: cafe,
           },
         },
         include: {
@@ -84,6 +86,8 @@ app.get("/employees", async (req, res) => {
         name: employee.name,
         email_address: employee.emailAddress,
         phone_number: employee.phoneNumber,
+        gender: employee.gender,
+        start_date: employee.startDate,
         days_worked: currentDate.diff(dayjs(employee.startDate), "day"),
         cafe: employee.cafe ? employee.cafe.name : "",
       }))
@@ -111,8 +115,14 @@ app.post("/cafes", async (req, res) => {
 
 // Create a new employee
 app.post("/employees", async (req, res) => {
-  const { id, name, emailAddress, phoneNumber, gender, cafeId, startDate } =
+  const { name, emailAddress, phoneNumber, gender, cafeId, startDate } =
     req.body;
+
+  const id = "UI" + uuidv4();
+
+  console.log({ id });
+
+  console.log({ create_employee: req.body });
 
   try {
     const employee = await prisma.employee.create({
@@ -128,6 +138,7 @@ app.post("/employees", async (req, res) => {
     });
     res.json(employee);
   } catch (error) {
+    console.log({ error });
     res.status(400).json({ error: error.message });
   }
 });
@@ -136,6 +147,9 @@ app.post("/employees", async (req, res) => {
 app.put("/cafes/:id", async (req, res) => {
   const { id } = req.params;
   const { name, description, logo, location } = req.body;
+
+  console.log({ id });
+  console.log({ cafe_update: req.body });
 
   try {
     const cafe = await prisma.cafe.update({

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addCafe, updateCafeValues } from "../features/cafeSlice";
+import { addCafe, fetchCafes, updateCafeValues } from "../features/cafeSlice";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import Layout from "../components/Layout";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -24,6 +24,12 @@ const AddEditCafe = () => {
   const [logo, setLogo] = useState("");
 
   useEffect(() => {
+    if (id) {
+      dispatch(fetchCafes());
+    }
+  }, [dispatch, id]);
+
+  useEffect(() => {
     if (cafe) {
       setName(cafe.name);
       setDescription(cafe.description);
@@ -34,6 +40,7 @@ const AddEditCafe = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log({ location });
     if (id) {
       dispatch(
         updateCafeValues(id, { name, description, location, logo })
