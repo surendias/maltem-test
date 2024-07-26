@@ -54,7 +54,8 @@ const AddEditEmployee = () => {
     e.preventDefault();
     if (id) {
       dispatch(
-        updateEmployeeValues(id, {
+        updateEmployeeValues({
+          id,
           name,
           emailAddress,
           phoneNumber,

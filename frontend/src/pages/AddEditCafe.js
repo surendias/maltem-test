@@ -43,7 +43,7 @@ const AddEditCafe = () => {
     console.log({ location });
     if (id) {
       dispatch(
-        updateCafeValues(id, { name, description, location, logo })
+        updateCafeValues({ id, name, description, location, logo })
       ).then(() => navigate("/cafes"));
     } else {
       dispatch(addCafe({ name, description, location, logo })).then(() =>

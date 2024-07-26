@@ -19,9 +19,12 @@ const createEmployee = async (employeeData) => {
   }
 };
 
-const updateEmployee = async (id, employeeData) => {
+const updateEmployee = async (employeeData) => {
   try {
-    const response = await api.put(`/employees/${id}`, employeeData);
+    const response = await api.put(
+      `/employees/${employeeData.id}`,
+      employeeData
+    );
     return response.data;
   } catch (error) {
     throw error;

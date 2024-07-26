@@ -18,10 +18,10 @@ const createCafe = async (cafeData) => {
   }
 };
 
-const updateCafe = async (id, cafeData) => {
+const updateCafe = async (cafeData) => {
   try {
     console.log({ cafeData });
-    const response = await api.put(`/cafes/${id}`, cafeData);
+    const response = await api.put(`/cafes/${cafeData.id}`, cafeData);
     return response.data;
   } catch (error) {
     throw error;

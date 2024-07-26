@@ -25,8 +25,8 @@ export const addEmployee = createAsyncThunk(
 
 export const updateEmployeeValues = createAsyncThunk(
   "employees/updateEmployee",
-  async (id, employeeData) => {
-    const response = await updateEmployee(id, employeeData);
+  async (employeeData) => {
+    const response = await updateEmployee(employeeData);
     return response;
   }
 );
