@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addEmployee, updateEmployeeValues } from "../features/employeeSlice";
+import {
+  addEmployee,
+  fetchEmployees,
+  updateEmployeeValues,
+} from "../features/employeeSlice";
 import {
   TextField,
   Button,
@@ -23,6 +27,7 @@ const AddEditEmployee = () => {
   const [searchParams] = useSearchParams();
   const id = searchParams.get("id");
   const cafe = searchParams.get("cafe");
+  console.log("cafe on update screen", cafe);
 
   const employee = useSelector((state) =>
     id ? state.employees.employees.find((c) => c.id === id) : null
@@ -42,10 +47,10 @@ const AddEditEmployee = () => {
     if (employee) {
       console.log("Employee is presetnt");
       setName(employee.name);
-      setEmailAddress(employee.email_address);
-      setPhoneNumber(employee.phone_number);
+      setEmailAddress(employee.emailAddress);
+      setPhoneNumber(employee.phoneNumber);
       setGender(employee.gender);
-      setStartDate(employee.start_date);
+      setStartDate(employee.startDate);
       setCafeId(employee.cafeId);
     }
   }, [employee]);
@@ -62,7 +67,13 @@ const AddEditEmployee = () => {
           gender,
           startDate,
         })
-      ).then(() => navigate(`/employees?cafe=${cafeId}`));
+      )
+        .then(() => dispatch(fetchEmployees(cafe)))
+        .then(() => {
+          console.log({ test111: cafe });
+
+          navigate(`/employees?cafe=${cafe}`);
+        });
     } else {
       dispatch(
         addEmployee({
@@ -73,7 +84,9 @@ const AddEditEmployee = () => {
           startDate,
           cafeId,
         })
-      ).then(() => navigate(`/employees?cafe=${cafeId}`));
+      )
+        .then(() => dispatch(fetchEmployees(cafe)))
+        .then(() => navigate(`/employees?cafe=${cafe}`));
     }
     setName("");
     setEmailAddress("");

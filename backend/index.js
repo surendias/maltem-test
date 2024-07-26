@@ -84,14 +84,14 @@ app.get("/employees", async (req, res) => {
       .map((employee) => ({
         id: employee.id,
         name: employee.name,
-        email_address: employee.emailAddress,
-        phone_number: employee.phoneNumber,
+        emailAddress: employee.emailAddress,
+        phoneNumber: employee.phoneNumber,
         gender: employee.gender,
-        start_date: employee.startDate,
-        days_worked: currentDate.diff(dayjs(employee.startDate), "day"),
+        startDate: employee.startDate,
+        daysWorked: currentDate.diff(dayjs(employee.startDate), "day"),
         cafe: employee.cafe ? employee.cafe.name : "",
       }))
-      .sort((a, b) => b.days_worked - a.days_worked);
+      .sort((a, b) => b.daysWorked - a.daysWorked);
 
     res.json(employees);
   } catch (error) {

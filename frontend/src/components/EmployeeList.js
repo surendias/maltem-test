@@ -18,6 +18,7 @@ const EmployeeList = ({ cafe }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const employees = useSelector((state) => state.employees.employees);
+  console.log({ employees });
   const employeeStatus = useSelector((state) => state.employees.status);
   const error = useSelector((state) => state.employees.error);
 
@@ -37,7 +38,7 @@ const EmployeeList = ({ cafe }) => {
               size="small"
               onClick={(e) => {
                 e.preventDefault();
-                navigate(`/add-edit-employee?id=${value}`);
+                navigate(`/add-edit-employee?id=${value}&cafe=${cafe}`);
               }}
             >
               <ModeIcon />
@@ -68,10 +69,10 @@ const EmployeeList = ({ cafe }) => {
   const columnDefs = [
     { headerName: "Employee Id", field: "id" },
     { headerName: "Name", field: "name" },
-    { headerName: "Email", field: "email_address" },
-    { headerName: "Phone Number", field: "phone_number" },
+    { headerName: "Email", field: "emailAddress" },
+    { headerName: "Phone Number", field: "phoneNumber" },
     { headerName: "Gender", field: "gender" },
-    { headerName: "Days Worked", field: "days_worked" },
+    { headerName: "Days Worked", field: "daysWorked" },
     { headerName: "Cafe", field: "cafe" },
     {
       headerName: "Actions",
