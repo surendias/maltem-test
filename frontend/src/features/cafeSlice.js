@@ -59,10 +59,7 @@ const cafeSlice = createSlice({
       .addCase(addCafe.fulfilled, (state, action) => {
         state.cafes.push(action.payload);
       })
-      .addCase(addCafe.fulfilled, (state, action) => {
-        state.cafes.push(action.payload);
-      })
-      .addCase(updateCafe.fulfilled, (state, action) => {
+      .addCase(updateCafeValues.fulfilled, (state, action) => {
         const index = state.cafes.findIndex(
           (cafe) => cafe.id === action.payload.id
         );

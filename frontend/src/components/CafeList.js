@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCafes } from "../features/cafeSlice";
+import { deleteCafeObject, fetchCafes } from "../features/cafeSlice";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -8,7 +8,6 @@ import { Button, ButtonGroup } from "@mui/material";
 import ModeIcon from "@mui/icons-material/Mode";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
-import { deleteCafe } from "../services/cafeService";
 
 const CafeList = ({ location }) => {
   const dispatch = useDispatch();
@@ -68,7 +67,7 @@ const CafeList = ({ location }) => {
               size="small"
               onClick={(e) => {
                 e.preventDefault();
-                dispatch(deleteCafe(value));
+                dispatch(deleteCafeObject(value));
               }}
             >
               <DeleteIcon />
