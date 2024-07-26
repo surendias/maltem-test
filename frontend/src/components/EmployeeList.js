@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCafes } from "../features/cafeSlice";
+import { fetchEmployees } from "../features/employeeSlice";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -8,14 +8,13 @@ import { Button, ButtonGroup } from "@mui/material";
 import ModeIcon from "@mui/icons-material/Mode";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
-import { deleteCafe } from "../services/cafeService";
 
-const CafeList = ({ location }) => {
+const EmployeeList = ({ cafeid }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const cafes = useSelector((state) => state.cafes.cafes);
-  const cafeStatus = useSelector((state) => state.cafes.status);
-  const error = useSelector((state) => state.cafes.error);
+  const employees = useSelector((state) => state.employees.employees);
+  const employeeStatus = useSelector((state) => state.employees.status);
+  const error = useSelector((state) => state.employees.error);
 
   const CompanyLogoRenderer = ({ value }) => (
     <span
@@ -59,7 +58,7 @@ const CafeList = ({ location }) => {
               size="small"
               onClick={(e) => {
                 e.preventDefault();
-                navigate(`/add-edit-cafe?id=${value}`);
+                navigate(`/add-edit-employee?id=${value}`);
               }}
             >
               <ModeIcon />
@@ -68,7 +67,7 @@ const CafeList = ({ location }) => {
               size="small"
               onClick={(e) => {
                 e.preventDefault();
-                dispatch(deleteCafe(value));
+                alert(value);
               }}
             >
               <DeleteIcon />
@@ -98,16 +97,16 @@ const CafeList = ({ location }) => {
   ];
 
   useEffect(() => {
-    if (cafeStatus === "idle") {
-      dispatch(fetchCafes(location));
+    if (employeeStatus === "idle") {
+      dispatch(fetchEmployees(cafeid));
     }
-  }, [cafeStatus, dispatch, location]);
+  }, [employeeStatus, dispatch, cafeid]);
 
-  if (cafeStatus === "loading") {
+  if (employeeStatus === "loading") {
     return <div>Loading...</div>;
   }
 
-  if (cafeStatus === "failed") {
+  if (employeeStatus === "failed") {
     return <div>{error}</div>;
   }
 
@@ -118,10 +117,10 @@ const CafeList = ({ location }) => {
         className="ag-theme-quartz" // applying the Data Grid theme
         style={{ height: 500 }} // the Data Grid will fill the size of the parent container
       >
-        <AgGridReact rowData={cafes} columnDefs={columnDefs} />
+        <AgGridReact rowData={employees} columnDefs={columnDefs} />
       </div>
     </div>
   );
 };
 
-export default CafeList;
+export default EmployeeList;

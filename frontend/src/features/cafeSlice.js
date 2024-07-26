@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getCafes, createCafe } from "../services/cafeService";
+import {
+  getCafes,
+  createCafe,
+  updateCafe,
+  deleteCafe,
+} from "../services/cafeService";
 
 export const fetchCafes = createAsyncThunk(
   "cafes/fetchCafes",
@@ -13,6 +18,22 @@ export const addCafe = createAsyncThunk("cafes/addCafe", async (cafeData) => {
   const response = await createCafe(cafeData);
   return response;
 });
+
+export const updateCafeValues = createAsyncThunk(
+  "cafes/updateCafe",
+  async (id, cafeData) => {
+    const response = await updateCafe(id, cafeData);
+    return response;
+  }
+);
+
+export const deleteCafeObject = createAsyncThunk(
+  "cafes/deleteCafe",
+  async (id) => {
+    await deleteCafe(id);
+    return id;
+  }
+);
 
 const cafeSlice = createSlice({
   name: "cafes",
@@ -37,6 +58,20 @@ const cafeSlice = createSlice({
       })
       .addCase(addCafe.fulfilled, (state, action) => {
         state.cafes.push(action.payload);
+      })
+      .addCase(addCafe.fulfilled, (state, action) => {
+        state.cafes.push(action.payload);
+      })
+      .addCase(updateCafe.fulfilled, (state, action) => {
+        const index = state.cafes.findIndex(
+          (cafe) => cafe.id === action.payload.id
+        );
+        if (index !== -1) {
+          state.cafes[index] = action.payload;
+        }
+      })
+      .addCase(deleteCafeObject.fulfilled, (state, action) => {
+        state.cafes = state.cafes.filter((cafe) => cafe.id !== action.payload);
       });
   },
 });
