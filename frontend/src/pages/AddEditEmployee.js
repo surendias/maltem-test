@@ -128,6 +128,10 @@ const AddEditEmployee = () => {
     setGender(event.target.value);
   };
 
+  const handleCancel = () => {
+    navigate(`/employees?cafe=${cafe}`);
+  };
+
   return (
     <Layout>
       <Box
@@ -183,9 +187,14 @@ const AddEditEmployee = () => {
           defaultValue={dayjs(startDate ? startDate : Date.now())}
           onChange={setStartDate}
         />
-        <Button type="submit" variant="contained" color="primary">
-          {id ? "Update Employee" : "Add Employee"}
-        </Button>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <Button type="submit" variant="contained" color="primary">
+            {id ? "Update Employee" : "Add Employee"}
+          </Button>
+          <Button variant="contained" color="secondary" onClick={handleCancel}>
+            Cancel
+          </Button>
+        </Box>
       </Box>
     </Layout>
   );

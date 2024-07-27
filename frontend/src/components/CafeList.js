@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-globals */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteCafeObject, fetchCafes } from "../features/cafeSlice";
 import { AgGridReact } from "ag-grid-react";
@@ -10,6 +10,7 @@ import ModeIcon from "@mui/icons-material/Mode";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PeopleIcon from "@mui/icons-material/People";
 import { useNavigate } from "react-router-dom";
+import { debounce } from "lodash";
 
 const CafeList = () => {
   const dispatch = useDispatch();
@@ -19,9 +20,15 @@ const CafeList = () => {
   const error = useSelector((state) => state.cafes.error);
   const [location, setLocation] = useState("");
 
+  // Debounced fetch function
+  const debouncedFetchCafes = useCallback(
+    debounce((loc) => dispatch(fetchCafes(loc)), 300),
+    []
+  );
+
   useEffect(() => {
-    dispatch(fetchCafes(location));
-  }, [location, dispatch]);
+    debouncedFetchCafes(location);
+  }, [location, debouncedFetchCafes]);
 
   const CompanyLogoRenderer = ({ value }) => (
     <span
@@ -126,20 +133,17 @@ const CafeList = () => {
     { headerName: "Location", field: "location" },
     {
       field: "logo",
-      // Add component to column via cellRenderer
       cellRenderer: CompanyLogoRenderer,
     },
     {
       headerName: "Actions",
       field: "id",
-      // Add component to column via cellRenderer
       cellRenderer: ActionButtonRenderer,
     },
   ];
 
   useEffect(() => {
     if (cafeStatus === "idle") {
-      console.log({ location });
       dispatch(fetchCafes(location));
     }
   }, [cafeStatus, dispatch, location]);
@@ -165,10 +169,7 @@ const CafeList = () => {
         sx={{ mb: 5 }}
       />
 
-      <div
-        className="ag-theme-quartz" // applying the Data Grid theme
-        style={{ height: 500 }} // the Data Grid will fill the size of the parent container
-      >
+      <div className="ag-theme-quartz" style={{ height: 500 }}>
         <AgGridReact rowData={cafes} columnDefs={columnDefs} />
       </div>
     </div>

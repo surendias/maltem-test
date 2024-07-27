@@ -56,6 +56,10 @@ const AddEditCafe = () => {
     setLogo("");
   };
 
+  const handleCancel = () => {
+    navigate(`/cafes`);
+  };
+
   return (
     <Layout>
       <Box
@@ -89,9 +93,15 @@ const AddEditCafe = () => {
           value={logo}
           onChange={(e) => setLogo(e.target.value)}
         />
-        <Button type="submit" variant="contained" color="primary">
-          {id ? "Update Cafe" : "Add Cafe"}
-        </Button>
+
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <Button type="submit" variant="contained" color="primary">
+            {id ? "Update Cafe" : "Add Cafe"}
+          </Button>
+          <Button variant="contained" color="secondary" onClick={handleCancel}>
+            Cancel
+          </Button>
+        </Box>
       </Box>
     </Layout>
   );
