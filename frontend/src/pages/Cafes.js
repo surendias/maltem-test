@@ -8,7 +8,7 @@ const Cafes = () => {
   return (
     <Layout>
       <Link to="/add-edit-cafe">
-        <Button>Add New Cafe</Button>
+        <Button variant="outlined">Add New Cafe</Button>
       </Link>
       <CafeList />
     </Layout>

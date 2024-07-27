@@ -16,10 +16,16 @@ app.get("/cafes", async (req, res) => {
   const { location } = req.query;
   let cafes;
 
+  console.log({ location });
+
   try {
     if (location) {
       cafes = await prisma.cafe.findMany({
-        where: { location },
+        where: {
+          location: {
+            contains: location,
+          },
+        },
       });
     } else {
       cafes = await prisma.cafe.findMany();
@@ -49,6 +55,7 @@ app.get("/cafes", async (req, res) => {
 
     res.json(cafesWithEmployeeCount);
   } catch (error) {
+    console.log({ error });
     res.status(500).json({ error: error.message });
   }
 });

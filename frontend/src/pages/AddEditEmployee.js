@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -40,8 +41,8 @@ const AddEditEmployee = () => {
   const [startDate, setStartDate] = useState("");
   const [cafeId, setCafeId] = useState(cafe ? cafe : "");
 
-  console.log({ cafeId });
-  console.log({ startDate });
+  const [emailError, setEmailError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
 
   useEffect(() => {
     if (employee) {
@@ -55,8 +56,36 @@ const AddEditEmployee = () => {
     }
   }, [employee]);
 
+  const validateEmail = (email) => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
+  const validatePhoneNumber = (phone) => {
+    const phonePattern = /^8\d{7}$/;
+    return phonePattern.test(phone);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    let isValid = true;
+
+    if (!validateEmail(emailAddress)) {
+      setEmailError("Invalid email address");
+      isValid = false;
+    } else {
+      setEmailError("");
+    }
+
+    if (!validatePhoneNumber(phoneNumber)) {
+      setPhoneError("Phone number must start with 8 and be 8 digits long");
+      isValid = false;
+    } else {
+      setPhoneError("");
+    }
+
+    if (!isValid) return;
+
     if (id) {
       dispatch(
         updateEmployeeValues({
@@ -71,7 +100,6 @@ const AddEditEmployee = () => {
         .then(() => dispatch(fetchEmployees(cafe)))
         .then(() => {
           console.log({ test111: cafe });
-
           navigate(`/employees?cafe=${cafe}`);
         });
     } else {
@@ -88,6 +116,7 @@ const AddEditEmployee = () => {
         .then(() => dispatch(fetchEmployees(cafe)))
         .then(() => navigate(`/employees?cafe=${cafe}`));
     }
+
     setName("");
     setEmailAddress("");
     setPhoneNumber("");
@@ -120,19 +149,17 @@ const AddEditEmployee = () => {
           value={emailAddress}
           onChange={(e) => setEmailAddress(e.target.value)}
           required
+          error={!!emailError}
+          helperText={emailError}
         />
         <TextField
           label="Phone Number"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
           required
+          error={!!phoneError}
+          helperText={phoneError}
         />
-        {/* <TextField
-          label="Gender"
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-          required
-        /> */}
         <FormControl>
           <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
           <RadioGroup
@@ -152,12 +179,6 @@ const AddEditEmployee = () => {
           </RadioGroup>
         </FormControl>
 
-        {/* <DatePicker
-          label="Days Worked"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          required
-        /> */}
         <DatePicker
           defaultValue={dayjs(startDate ? startDate : Date.now())}
           onChange={setStartDate}

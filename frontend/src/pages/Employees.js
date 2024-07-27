@@ -11,7 +11,7 @@ const Employees = () => {
   return (
     <Layout>
       <Link to={`/add-edit-employee?cafe=${cafe}`}>
-        <Button>Add New Employee</Button>
+        <Button variant="outlined">Add New Employee</Button>
       </Link>
       <EmployeeList cafe={cafe} />
     </Layout>

@@ -1,22 +1,27 @@
 /* eslint-disable no-restricted-globals */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteCafeObject, fetchCafes } from "../features/cafeSlice";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { Button, ButtonGroup } from "@mui/material";
+import { Button, ButtonGroup, TextField } from "@mui/material";
 import ModeIcon from "@mui/icons-material/Mode";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PeopleIcon from "@mui/icons-material/People";
 import { useNavigate } from "react-router-dom";
 
-const CafeList = ({ location }) => {
+const CafeList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cafes = useSelector((state) => state.cafes.cafes);
   const cafeStatus = useSelector((state) => state.cafes.status);
   const error = useSelector((state) => state.cafes.error);
+  const [location, setLocation] = useState("");
+
+  useEffect(() => {
+    dispatch(fetchCafes(location));
+  }, [location, dispatch]);
 
   const CompanyLogoRenderer = ({ value }) => (
     <span
@@ -134,6 +139,7 @@ const CafeList = ({ location }) => {
 
   useEffect(() => {
     if (cafeStatus === "idle") {
+      console.log({ location });
       dispatch(fetchCafes(location));
     }
   }, [cafeStatus, dispatch, location]);
@@ -149,7 +155,16 @@ const CafeList = ({ location }) => {
   return (
     <div>
       <h1>Cafes</h1>
-      Text
+
+      <TextField
+        id="standard-basic"
+        label="Filter By Location"
+        variant="standard"
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+        sx={{ mb: 5 }}
+      />
+
       <div
         className="ag-theme-quartz" // applying the Data Grid theme
         style={{ height: 500 }} // the Data Grid will fill the size of the parent container
